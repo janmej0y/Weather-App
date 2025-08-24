@@ -1,110 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Weather App</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #232526, #414345);
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .app {
-      background: rgba(255,255,255,0.1);
-      padding: 20px;
-      border-radius: 12px;
-      width: 320px;
-      text-align: center;
-    }
-    input {
-      width: 70%;
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      outline: none;
-    }
-    button {
-      padding: 10px;
-      border: none;
-      background: orange;
-      color: white;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    .weather-card {
-      margin-top: 20px;
-      display: none;
-    }
-    img { width: 80px; }
-  </style>
+
+  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#1e3c72" />
 </head>
 <body>
-  <div class="app">
-    <h2>🌤️ Weather App</h2>
-    <input type="text" id="cityInput" placeholder="Enter city name...">
-    <button id="searchBtn">Search</button>
+  <main class="app" role="main">
+    <header class="header">
+      <h1 aria-live="polite">🌤️ Weather App</h1>
+      <button id="locBtn" class="icon-btn" title="Use my location" aria-label="Use my location">
+        📍
+      </button>
+    </header>
 
-    <div class="weather-card" id="weatherCard">
-      <h3 id="cityName"></h3>
-      <img id="weatherIcon" src="">
-      <p id="temperature"></p>
-      <p id="condition"></p>
-      <p>💧 Humidity: <span id="humidity"></span></p>
-      <p>🌬️ Wind: <span id="wind"></span></p>
-    </div>
-  </div>
+    <form id="searchForm" class="search-box" novalidate>
+      <input
+        id="cityInput"
+        type="text"
+        name="city"
+        placeholder="Enter city name…"
+        autocomplete="off"
+        aria-label="City name"
+        required
+      />
+      <button id="searchBtn" type="submit">Search</button>
+    </form>
 
-  <script>
-    const API_KEY = "a865200b52fe478ab6752909252408";
-    const weatherCard = document.getElementById("weatherCard");
+    <section id="statusBar" class="status" aria-live="polite" hidden></section>
 
-    document.getElementById("searchBtn").addEventListener("click", getWeather);
-    document.getElementById("cityInput").addEventListener("keypress", function(e) {
-      if (e.key === "Enter") getWeather();
-    });
+    <article id="weatherCard" class="weather-card" hidden>
+      <div class="icon-wrap">
+        <img id="weatherIcon" src="" alt="Weather icon" />
+      </div>
+      <h2 id="cityName" class="city">—</h2>
+      <p id="temperature" class="temp">—°C</p>
+      <p id="condition" class="condition">—</p>
 
-    async function getWeather() {
-      const city = document.getElementById("cityInput").value.trim();
-      if (!city) {
-        alert("Please enter a city name!");
-        return;
-      }
+      <div class="extra-info">
+        <div class="pill">💧 Humidity: <span id="humidity">—%</span></div>
+        <div class="pill">🌬️ Wind: <span id="wind">— km/h</span></div>
+      </div>
+    </article>
 
-      try {
-        // ✅ OpenWeatherMap endpoint
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric`;
-        const response = await fetch(url);
+    <footer class="footer">
+      <p>Made with ❤️ by
+        <a href="https://github.com/janmej0y" target="_blank" rel="noopener">janmej0y</a>
+      </p>
+    </footer>
+  </main>
 
-        if (!response.ok) {
-          alert("❌ City not found!");
-          weatherCard.style.display = "none";
-          return;
-        }
+  <div id="loader" class="loader" hidden aria-hidden="true" role="status">
+    <div class="spinner"></div>
+    <span class="sr-only">Loading…</span>
+ </div>
 
-        const data = await response.json();
-        displayWeather(data);
-      } catch (error) {
-        alert("⚠️ Error fetching weather data!");
-        console.error(error);
-      }
-    }
-
-    function displayWeather(data) {
-      document.getElementById("cityName").textContent = `${data.name}, ${data.sys.country}`;
-      document.getElementById("temperature").textContent = `${Math.round(data.main.temp)}°C`;
-      document.getElementById("condition").textContent = data.weather[0].main;
-      document.getElementById("humidity").textContent = `${data.main.humidity}%`;
-      document.getElementById("wind").textContent = `${data.wind.speed} m/s`;
-      document.getElementById("weatherIcon").src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
-
-      weatherCard.style.display = "block";
-    }
-  </script>
+  <script src="app.js" defer></script>
 </body>
 </html>
