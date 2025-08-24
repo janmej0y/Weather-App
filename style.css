@@ -1,37 +1,82 @@
-/* General Styling */
+/* ===== Reset ===== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 body {
-  background: linear-gradient(135deg, #1e1e2f, #252542, #2a2a52);
-  color: #fff;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.app-container {
-  width: 100%;
-  max-width: 500px;
   padding: 20px;
+  transition: background 0.5s ease, color 0.5s ease;
+}
+
+/* ===== Animated Gradient Background ===== */
+body.light {
+  background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+  color: #111;
+}
+
+body.dark {
+  background: linear-gradient(-45deg, #1e3c72, #2a5298, #1b1b2f, #252542);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  color: #fff;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ===== Container ===== */
+.weather-app {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.3);
+  padding: 30px 25px;
+  width: 100%;
+  max-width: 450px;
   text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  transition: background 0.5s ease;
 }
 
-header h1 {
+/* ===== Header ===== */
+.weather-app header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
-  font-size: 2rem;
-  color: #00d4ff;
 }
 
+.weather-app h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.toggle-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 12px;
+  background: #ff9800;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.toggle-btn:hover {
+  background: #e68900;
+}
+
+/* ===== Search Box ===== */
 .search-box {
   display: flex;
   gap: 10px;
@@ -40,15 +85,15 @@ header h1 {
 
 .search-box input {
   flex: 1;
-  padding: 10px;
-  border: none;
+  padding: 12px 15px;
   border-radius: 12px;
+  border: none;
   outline: none;
   font-size: 1rem;
 }
 
 .search-box button {
-  padding: 10px 16px;
+  padding: 12px 18px;
   border: none;
   border-radius: 12px;
   background: #00d4ff;
@@ -62,64 +107,72 @@ header h1 {
   background: #00aacc;
 }
 
-.weather-card {
-  background: rgba(255, 255, 255, 0.08);
-  padding: 20px;
-  border-radius: 15px;
+/* ===== Weather Card ===== */
+.weather-info {
+  display: none;
+  margin-top: 20px;
   animation: fadeIn 0.5s ease-in-out;
 }
 
-.weather-card h2 {
-  font-size: 1.6rem;
-  margin-bottom: 5px;
-}
-
-.weather-info {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  margin: 15px 0;
+.weather-info.active {
+  display: block;
 }
 
 .weather-info img {
-  width: 80px;
+  width: 120px;
+  margin-bottom: 10px;
 }
 
-.weather-info h3 {
+.weather-info h2 {
   font-size: 2rem;
+  margin-bottom: 10px;
 }
 
-.extra-info p {
+.weather-info p {
+  font-size: 1rem;
   margin: 5px 0;
-  font-size: 0.95rem;
   opacity: 0.9;
 }
 
-.error-message {
-  color: #ff4c4c;
-  font-weight: bold;
+.extra-info {
+  margin-top: 10px;
+}
+
+.extra-info p {
+  margin: 4px 0;
+  font-size: 0.95rem;
+}
+
+/* ===== Error Message ===== */
+.error {
   margin-top: 15px;
+  font-size: 0.95rem;
+  color: #ff4d4d;
 }
 
-.hidden {
-  display: none;
-}
-
+/* ===== Footer ===== */
 footer {
-  margin-top: 20px;
-  font-size: 0.9rem;
+  margin-top: 25px;
+  font-size: 0.85rem;
   opacity: 0.8;
 }
 
-/* Animations */
+/* ===== Animations ===== */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(15px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Mobile Responsiveness */
-@media (max-width: 600px) {
+/* ===== Mobile Responsiveness ===== */
+@media (max-width: 500px) {
+  .weather-app {
+    padding: 20px 15px;
+  }
+
+  .weather-app h1 {
+    font-size: 1.4rem;
+  }
+
   .search-box {
     flex-direction: column;
   }
@@ -128,7 +181,11 @@ footer {
     width: 100%;
   }
 
-  .weather-info {
-    flex-direction: column;
+  .weather-info img {
+    width: 90px;
+  }
+
+  .weather-info h2 {
+    font-size: 1.5rem;
   }
 }
