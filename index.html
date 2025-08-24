@@ -189,61 +189,90 @@
   </div>
 
   <script>
-    // Mock Weather Options (random pick)
-    const weatherOptions = [
-      {
-        condition: "Sunny",
-        icon: "https://cdn-icons-png.flaticon.com/512/869/869869.png"
-      },
-      {
-        condition: "Cloudy",
-        icon: "https://cdn-icons-png.flaticon.com/512/414/414825.png"
-      },
-      {
-        condition: "Rainy",
-        icon: "https://cdn-icons-png.flaticon.com/512/1163/1163624.png"
-      },
-      {
-        condition: "Windy",
-        icon: "https://cdn-icons-png.flaticon.com/512/3076/3076129.png"
-      },
-      {
-        condition: "Stormy",
-        icon: "https://cdn-icons-png.flaticon.com/512/1146/1146860.png"
-      }
-    ];
-
+    const API_KEY = "a865200b52fe478ab6752909252408";
     const searchBtn = document.getElementById("searchBtn");
     const weatherCard = document.getElementById("weatherCard");
 
+    // On button click: fetch by city name
     searchBtn.addEventListener("click", () => {
       const cityInput = document.getElementById("cityInput").value.trim();
       if (cityInput === "") return;
-
-      // Pick random weather data
-      const randomWeather = weatherOptions[Math.floor(Math.random() * weatherOptions.length)];
-      const mockWeather = {
-        city: cityInput,
-        temp: Math.floor(Math.random() * 15) + 15, // 15°C - 30°C
-        condition: randomWeather.condition,
-        humidity: Math.floor(Math.random() * 50) + 40, // 40% - 90%
-        wind: Math.floor(Math.random() * 20) + 5, // 5-25 km/h
-        icon: randomWeather.icon
-      };
-
-      displayWeather(mockWeather);
+      fetchWeatherByCity(cityInput);
     });
 
-    function displayWeather(data) {
-      document.getElementById("cityName").textContent = data.city;
-      document.getElementById("temperature").textContent = `${data.temp}°C`;
-      document.getElementById("condition").textContent = data.condition;
-      document.getElementById("humidity").textContent = `${data.humidity}%`;
-      document.getElementById("wind").textContent = `${data.wind} km/h`;
-      document.getElementById("weatherIcon").src = data.icon;
+    // Fetch weather by city name
+    async function fetchWeatherByCity(city) {
+      try {
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
+        const response = await fetch(url);
+        if (!response.ok) {
+          alert("City not found!");
+          return;
+        }
+        const data = await response.json();
+        updateWeatherCard(data);
+      } catch (error) {
+        alert("Error fetching weather data!");
+        console.error(error);
+      }
+    }
+
+    // Fetch weather by coordinates
+    async function fetchWeatherByCoords(lat, lon) {
+      try {
+        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`;
+        const response = await fetch(url);
+        if (!response.ok) {
+          alert("Unable to fetch location weather!");
+          return;
+        }
+        const data = await response.json();
+        updateWeatherCard(data);
+      } catch (error) {
+        alert("Error fetching location weather!");
+        console.error(error);
+      }
+    }
+
+    // Update weather card
+    function updateWeatherCard(data) {
+      const weatherData = {
+        city: data.name,
+        temp: Math.round(data.main.temp),
+        condition: data.weather[0].main,
+        humidity: data.main.humidity,
+        wind: data.wind.speed,
+        icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
+      };
+
+      document.getElementById("cityName").textContent = weatherData.city;
+      document.getElementById("temperature").textContent = `${weatherData.temp}°C`;
+      document.getElementById("condition").textContent = weatherData.condition;
+      document.getElementById("humidity").textContent = `${weatherData.humidity}%`;
+      document.getElementById("wind").textContent = `${weatherData.wind} km/h`;
+      document.getElementById("weatherIcon").src = weatherData.icon;
 
       weatherCard.style.display = "block";
     }
+
+    // Auto-detect location on page load
+    window.onload = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const { latitude, longitude } = pos.coords;
+            fetchWeatherByCoords(latitude, longitude);
+          },
+          (err) => {
+            console.warn("Geolocation denied, fallback to default city.");
+            fetchWeatherByCity("London"); // fallback
+          }
+        );
+      } else {
+        alert("Geolocation not supported in this browser.");
+        fetchWeatherByCity("London"); // fallback
+      }
+    };
   </script>
 </body>
 </html>
