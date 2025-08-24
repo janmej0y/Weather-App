@@ -2,62 +2,47 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Weather App</title>
-
   <link rel="stylesheet" href="style.css" />
-  <meta name="theme-color" content="#1e3c72" />
 </head>
 <body>
-  <main class="app" role="main">
-    <header class="header">
-      <h1 aria-live="polite">🌤️ Weather App</h1>
-      <button id="locBtn" class="icon-btn" title="Use my location" aria-label="Use my location">
-        📍
-      </button>
+  <div class="app-container">
+    <header>
+      <h1>Weather App</h1>
     </header>
 
-    <form id="searchForm" class="search-box" novalidate>
-      <input
-        id="cityInput"
-        type="text"
-        name="city"
-        placeholder="Enter city name…"
-        autocomplete="off"
-        aria-label="City name"
-        required
-      />
-      <button id="searchBtn" type="submit">Search</button>
-    </form>
-
-    <section id="statusBar" class="status" aria-live="polite" hidden></section>
-
-    <article id="weatherCard" class="weather-card" hidden>
-      <div class="icon-wrap">
-        <img id="weatherIcon" src="" alt="Weather icon" />
+    <main>
+      <div class="search-box">
+        <input type="text" id="cityInput" placeholder="Enter city name..." />
+        <button id="searchBtn">Search</button>
       </div>
-      <h2 id="cityName" class="city">—</h2>
-      <p id="temperature" class="temp">—°C</p>
-      <p id="condition" class="condition">—</p>
 
-      <div class="extra-info">
-        <div class="pill">💧 Humidity: <span id="humidity">—%</span></div>
-        <div class="pill">🌬️ Wind: <span id="wind">— km/h</span></div>
+      <div class="weather-card hidden" id="weatherCard">
+        <h2 id="cityName"></h2>
+        <p id="date"></p>
+        <div class="weather-info">
+          <img id="weatherIcon" alt="Weather Icon" />
+          <div>
+            <h3 id="temperature"></h3>
+            <p id="description"></p>
+          </div>
+        </div>
+        <div class="extra-info">
+          <p>🌡️ Feels like: <span id="feelsLike"></span></p>
+          <p>💧 Humidity: <span id="humidity"></span></p>
+          <p>🌬️ Wind: <span id="wind"></span></p>
+        </div>
       </div>
-    </article>
 
-    <footer class="footer">
-      <p>Made with ❤️ by
-        <a href="https://github.com/janmej0y" target="_blank" rel="noopener">janmej0y</a>
-      </p>
+      <p class="error-message hidden" id="errorMessage">City not found. Try again.</p>
+    </main>
+
+    <footer>
+      <p>Made with ❤️ by <strong>janmej0y</strong></p>
     </footer>
-  </main>
+  </div>
 
-  <div id="loader" class="loader" hidden aria-hidden="true" role="status">
-    <div class="spinner"></div>
-    <span class="sr-only">Loading…</span>
- </div>
-
-  <script src="app.js" defer></script>
+  <script src="script.js"></script>
 </body>
 </html>
