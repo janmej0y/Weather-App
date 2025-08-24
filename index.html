@@ -79,6 +79,7 @@
       background: rgba(255, 255, 255, 0.08);
       box-shadow: inset 0 0 25px rgba(255,255,255,0.15);
       animation: fadeIn 0.5s ease-in-out;
+      display: none;
     }
 
     .weather-card img {
@@ -168,7 +169,7 @@
     </div>
 
     <!-- Weather Card -->
-    <div class="weather-card" id="weatherCard" style="display: none;">
+    <div class="weather-card" id="weatherCard">
       <img id="weatherIcon" src="" alt="Weather Icon">
       <div class="city" id="cityName">City</div>
       <div class="temp" id="temperature">--°C</div>
@@ -189,90 +190,43 @@
   </div>
 
   <script>
-    const API_KEY = "a865200b52fe478ab6752909252408";
+    const API_KEY = "76a2795da571afe229169d58572ed8fd6e626d9dced8ac85d8cfc56d0d7c7749";
+
     const searchBtn = document.getElementById("searchBtn");
     const weatherCard = document.getElementById("weatherCard");
 
-    // On button click: fetch by city name
-    searchBtn.addEventListener("click", () => {
-      const cityInput = document.getElementById("cityInput").value.trim();
-      if (cityInput === "") return;
-      fetchWeatherByCity(cityInput);
+    searchBtn.addEventListener("click", async () => {
+      const city = document.getElementById("cityInput").value.trim();
+      if (!city) {
+        alert("Please enter a city name!");
+        return;
+      }
+
+      try {
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric`;
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("City not found");
+        }
+
+        const data = await response.json();
+        displayWeather(data);
+      } catch (error) {
+        alert("❌ " + error.message);
+        weatherCard.style.display = "none";
+      }
     });
 
-    // Fetch weather by city name
-    async function fetchWeatherByCity(city) {
-      try {
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
-        const response = await fetch(url);
-        if (!response.ok) {
-          alert("City not found!");
-          return;
-        }
-        const data = await response.json();
-        updateWeatherCard(data);
-      } catch (error) {
-        alert("Error fetching weather data!");
-        console.error(error);
-      }
-    }
-
-    // Fetch weather by coordinates
-    async function fetchWeatherByCoords(lat, lon) {
-      try {
-        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`;
-        const response = await fetch(url);
-        if (!response.ok) {
-          alert("Unable to fetch location weather!");
-          return;
-        }
-        const data = await response.json();
-        updateWeatherCard(data);
-      } catch (error) {
-        alert("Error fetching location weather!");
-        console.error(error);
-      }
-    }
-
-    // Update weather card
-    function updateWeatherCard(data) {
-      const weatherData = {
-        city: data.name,
-        temp: Math.round(data.main.temp),
-        condition: data.weather[0].main,
-        humidity: data.main.humidity,
-        wind: data.wind.speed,
-        icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
-      };
-
-      document.getElementById("cityName").textContent = weatherData.city;
-      document.getElementById("temperature").textContent = `${weatherData.temp}°C`;
-      document.getElementById("condition").textContent = weatherData.condition;
-      document.getElementById("humidity").textContent = `${weatherData.humidity}%`;
-      document.getElementById("wind").textContent = `${weatherData.wind} km/h`;
-      document.getElementById("weatherIcon").src = weatherData.icon;
+    function displayWeather(data) {
+      document.getElementById("cityName").textContent = `${data.name}, ${data.sys.country}`;
+      document.getElementById("temperature").textContent = `${Math.round(data.main.temp)}°C`;
+      document.getElementById("condition").textContent = data.weather[0].description;
+      document.getElementById("humidity").textContent = `${data.main.humidity}%`;
+      document.getElementById("wind").textContent = `${data.wind.speed} km/h`;
+      document.getElementById("weatherIcon").src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
 
       weatherCard.style.display = "block";
     }
-
-    // Auto-detect location on page load
-    window.onload = () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (pos) => {
-            const { latitude, longitude } = pos.coords;
-            fetchWeatherByCoords(latitude, longitude);
-          },
-          (err) => {
-            console.warn("Geolocation denied, fallback to default city.");
-            fetchWeatherByCity("London"); // fallback
-          }
-        );
-      } else {
-        alert("Geolocation not supported in this browser.");
-        fetchWeatherByCity("London"); // fallback
-      }
-    };
   </script>
 </body>
 </html>
