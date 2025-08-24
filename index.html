@@ -5,197 +5,71 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Weather App</title>
   <style>
-    /* ===== Global Styles ===== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-    }
-
     body {
-      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #232526, #414345);
+      color: white;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      background: linear-gradient(135deg, #232526, #414345);
-      color: #fff;
-      padding: 20px;
+      height: 100vh;
+      margin: 0;
     }
-
     .app {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(15px);
-      padding: 30px 25px;
-      border-radius: 18px;
+      background: rgba(255,255,255,0.1);
+      padding: 20px;
+      border-radius: 12px;
+      width: 320px;
       text-align: center;
-      width: 360px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     }
-
-    .app h1 {
-      font-size: 1.9rem;
-      margin-bottom: 15px;
-      letter-spacing: 1px;
-    }
-
-    /* ===== Search Box ===== */
-    .search-box {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-
-    .search-box input {
-      padding: 10px 14px;
-      border: none;
-      border-radius: 10px 0 0 10px;
-      outline: none;
-      font-size: 1rem;
+    input {
       width: 70%;
-    }
-
-    .search-box button {
-      padding: 10px 14px;
+      padding: 10px;
+      border-radius: 8px;
       border: none;
-      background: #ff9800;
-      color: #fff;
-      font-size: 1rem;
-      border-radius: 0 10px 10px 0;
+      outline: none;
+    }
+    button {
+      padding: 10px;
+      border: none;
+      background: orange;
+      color: white;
+      border-radius: 8px;
       cursor: pointer;
-      transition: 0.3s;
     }
-
-    .search-box button:hover {
-      background: #e68900;
-    }
-
-    /* ===== Weather Card ===== */
     .weather-card {
-      margin-top: 15px;
-      padding: 25px;
-      border-radius: 15px;
-      background: rgba(255, 255, 255, 0.08);
-      box-shadow: inset 0 0 25px rgba(255,255,255,0.15);
-      animation: fadeIn 0.5s ease-in-out;
+      margin-top: 20px;
       display: none;
     }
-
-    .weather-card img {
-      width: 85px;
-      margin-bottom: 12px;
-    }
-
-    .city {
-      font-size: 1.4rem;
-      margin-bottom: 5px;
-    }
-
-    .temp {
-      font-size: 2.7rem;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    .condition {
-      font-size: 1.1rem;
-      margin-bottom: 12px;
-      opacity: 0.9;
-    }
-
-    .extra-info {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 10px;
-      font-size: 0.95rem;
-    }
-
-    .extra-info div {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 8px 10px;
-      border-radius: 10px;
-      flex: 1;
-      margin: 0 4px;
-    }
-
-    /* ===== Footer ===== */
-    footer {
-      margin-top: 30px;
-      text-align: center;
-    }
-
-    .github-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      text-decoration: none;
-      color: #fff;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 10px 16px;
-      border-radius: 12px;
-      backdrop-filter: blur(8px);
-      transition: all 0.3s ease;
-      font-weight: 500;
-      font-size: 0.95rem;
-    }
-
-    .github-link:hover {
-      background: rgba(255, 255, 255, 0.25);
-      transform: translateY(-3px);
-      box-shadow: 0 5px 18px rgba(0,0,0,0.4);
-    }
-
-    .github-link img {
-      width: 22px;
-      height: 22px;
-    }
-
-    /* Animation */
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(10px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
+    img { width: 80px; }
   </style>
 </head>
 <body>
   <div class="app">
-    <h1>🌤️ Weather App</h1>
+    <h2>🌤️ Weather App</h2>
+    <input type="text" id="cityInput" placeholder="Enter city name...">
+    <button id="searchBtn">Search</button>
 
-    <!-- Search Input -->
-    <div class="search-box">
-      <input type="text" id="cityInput" placeholder="Enter city name...">
-      <button id="searchBtn">Search</button>
-    </div>
-
-    <!-- Weather Card -->
     <div class="weather-card" id="weatherCard">
-      <img id="weatherIcon" src="" alt="Weather Icon">
-      <div class="city" id="cityName">City</div>
-      <div class="temp" id="temperature">--°C</div>
-      <div class="condition" id="condition">Condition</div>
-      <div class="extra-info">
-        <div>💧 <span id="humidity">--%</span></div>
-        <div>🌬️ <span id="wind">-- km/h</span></div>
-      </div>
+      <h3 id="cityName"></h3>
+      <img id="weatherIcon" src="">
+      <p id="temperature"></p>
+      <p id="condition"></p>
+      <p>💧 Humidity: <span id="humidity"></span></p>
+      <p>🌬️ Wind: <span id="wind"></span></p>
     </div>
-
-    <!-- Footer -->
-    <footer>
-      <a class="github-link" href="https://github.com/janmej0y" target="_blank">
-        <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub">
-        My GitHub
-      </a>
-    </footer>
   </div>
 
   <script>
-    const API_KEY = "76a2795da571afe229169d58572ed8fd6e626d9dced8ac85d8cfc56d0d7c7749";
-
-    const searchBtn = document.getElementById("searchBtn");
+    const API_KEY = "a865200b52fe478ab6752909252408";
     const weatherCard = document.getElementById("weatherCard");
 
-    searchBtn.addEventListener("click", async () => {
+    document.getElementById("searchBtn").addEventListener("click", getWeather);
+    document.getElementById("cityInput").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") getWeather();
+    });
+
+    async function getWeather() {
       const city = document.getElementById("cityInput").value.trim();
       if (!city) {
         alert("Please enter a city name!");
@@ -203,26 +77,30 @@
       }
 
       try {
+        // ✅ OpenWeatherMap endpoint
         const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric`;
         const response = await fetch(url);
+
         if (!response.ok) {
-          throw new Error("City not found");
+          alert("❌ City not found!");
+          weatherCard.style.display = "none";
+          return;
         }
 
         const data = await response.json();
         displayWeather(data);
       } catch (error) {
-        alert("❌ " + error.message);
-        weatherCard.style.display = "none";
+        alert("⚠️ Error fetching weather data!");
+        console.error(error);
       }
-    });
+    }
 
     function displayWeather(data) {
       document.getElementById("cityName").textContent = `${data.name}, ${data.sys.country}`;
       document.getElementById("temperature").textContent = `${Math.round(data.main.temp)}°C`;
-      document.getElementById("condition").textContent = data.weather[0].description;
+      document.getElementById("condition").textContent = data.weather[0].main;
       document.getElementById("humidity").textContent = `${data.main.humidity}%`;
-      document.getElementById("wind").textContent = `${data.wind.speed} km/h`;
+      document.getElementById("wind").textContent = `${data.wind.speed} m/s`;
       document.getElementById("weatherIcon").src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
 
       weatherCard.style.display = "block";
