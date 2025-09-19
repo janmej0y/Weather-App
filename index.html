@@ -5,44 +5,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Weather App</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://kit.fontawesome.com/2f3e6a2d5b.js" crossorigin="anonymous"></script>
 </head>
-<body>
+<body class="light">
   <div class="app-container">
-    <header>
-      <h1>Weather App</h1>
-    </header>
+    <div class="weather-app">
+      <header>
+        <h1>Weather App</h1>
+        <button class="toggle-btn" id="themeToggle">🌙</button>
+      </header>
 
-    <main>
-      <div class="search-box">
-        <input type="text" id="cityInput" placeholder="Enter city name..." />
-        <button id="searchBtn">Search</button>
-      </div>
+      <main>
+        <div class="search-box">
+          <input type="text" id="cityInput" placeholder="Enter city name..." />
+          <button id="searchBtn">Search</button>
+        </div>
 
-      <div class="weather-card hidden" id="weatherCard">
-        <h2 id="cityName"></h2>
-        <p id="date"></p>
-        <div class="weather-info">
-          <img id="weatherIcon" alt="Weather Icon" />
-          <div>
-            <h3 id="temperature"></h3>
-            <p id="description"></p>
+        <div class="loader" id="loader"></div>
+
+        <div class="weather-card hidden" id="weatherCard">
+          <h2 id="cityName"></h2>
+          <p id="date"></p>
+          <div class="weather-info">
+            <img id="weatherIcon" alt="Weather Icon" />
+            <div>
+              <h3 id="temperature"></h3>
+              <p id="description"></p>
+            </div>
+          </div>
+
+          <div class="extra-info">
+            <p>🌡️ Feels like: <span id="feelsLike"></span></p>
+            <p>💧 Humidity: <span id="humidity"></span></p>
+            <p>🌬️ Wind: <span id="wind"></span></p>
+          </div>
+
+          <div class="weather-grid">
+            <div class="grid-item"><i class="fas fa-wind"></i> <span id="gridWind"></span></div>
+            <div class="grid-item"><i class="fas fa-tint"></i> <span id="gridHumidity"></span></div>
+            <div class="grid-item"><i class="fas fa-compress"></i> <span id="gridPressure"></span></div>
           </div>
         </div>
-        <div class="extra-info">
-          <p>🌡️ Feels like: <span id="feelsLike"></span></p>
-          <p>💧 Humidity: <span id="humidity"></span></p>
-          <p>🌬️ Wind: <span id="wind"></span></p>
-        </div>
-      </div>
 
-      <p class="error-message hidden" id="errorMessage">City not found. Try again.</p>
-    </main>
+        <p class="error hidden" id="errorMessage">❌ City not found. Try again.</p>
+      </main>
 
-    <footer>
-      <p>Made with ❤️ by <strong>janmej0y</strong></p>
-    </footer>
+      <footer>
+        <p>Made by <strong>janmej0y</strong></p>
+      </footer>
+    </div>
   </div>
 
-  <script src="app.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
