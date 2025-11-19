@@ -347,3 +347,13 @@ header h1{font-size:1.6rem;background:linear-gradient(45deg,#ff9800,#ff5722);-we
 
 /* responsive */
 @media(max-width:520px){.weather-app{padding:14px}.icon-wrap{width:84px;height:84px}}
+.weather-app h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, #ff8a00, #ff3d00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+}
