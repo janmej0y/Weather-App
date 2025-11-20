@@ -1,3 +1,64 @@
+// ===== DESI WEATHER ROAST ENGINE =====
+const weatherRoasts = {
+  sunny: [
+    "Aaj garmi tumhari aukat dikhayegi. 🔥",
+    "Sunlight: ‘Aaj teri tashreef sekh dunga.’",
+    "Bahar mat nikal, varna tu fries ban jayega.",
+    "Aaj ka weather: Tandoor level MAX.",
+    "Suraj ne bola: ‘Aaj main full volume pe hu.’",
+    "Garmi: Tumhari zindagi jaisa — bina wajah garam."
+  ],
+  rainy: [
+    "Barsaat: Tumhara love story jaisa—unexpected aur messy. 💔🌧",
+    "Rain: ‘Aaj kapde dhone ki free service.’",
+    "Roads be like: ‘Aaj swimming competition hoga.’",
+    "Baarish: ‘Mood off mat kar… main hi kar dunga.’",
+    "Weather: Aaj sab kichad level pro max."
+  ],
+  cloudy: [
+    "Cloudy: Universe tumhara roast plan kar raha. ☁️🔥",
+    "Clouds: ‘Aaj tumhari life ki tarah sab dhundla.’",
+    "Aasmaan be like: ‘Scene on… but chup chap.’",
+    "Cloudy mood: ‘Depression memes unlocked.’",
+    "Sky: ‘Main hoodie pehen ke aaya hu.’"
+  ],
+  storm: [
+    "Aandhi: ‘Sabko hila dunga, tu bhi ready reh.’ 🌪️",
+    "Storm: ‘Main entry leta hu, phir sab udd jata hai.’",
+    "Hawa be like: ‘Aaj main UFC mode me hu.’",
+    "Toofan: ‘Chappal udaunga — free of cost!’",
+    "Weather: Aaj ka vibe—full destruction."
+  ],
+  snow: [
+    "Snow: ‘Aaj emotions bhi freeze ho jayenge.’ ❄️😂",
+    "Winter: ‘Relationship aur temperature — dono 0.’",
+    "Bahar mat nikal — ice cube ban jayega.",
+    "Thand itni: Dimaag bhi reboot ho gaya.",
+    "Weather: ‘Main fridge mode on kar raha hu.’"
+  ],
+  default: [
+    "Weather: ‘Aaj ka din bhi chala jayega… tu tension mat le.’",
+    "Sky be like: ‘Bas chal raha hu… tu apna dekh.’",
+    "Aasmaan: ‘Scene on hai.’",
+    "Weather: ‘Chal bhai kaam kar, main handle kar lunga.’",
+    "Aaj ka mausam: Tumhari vibe jaisa — unstable."
+  ]
+};
+
+function getRoastForCondition(cond) {
+  cond = cond.toLowerCase();
+  if (cond.includes("sun") || cond.includes("clear")) return random(weatherRoasts.sunny);
+  if (cond.includes("rain") || cond.includes("drizzle")) return random(weatherRoasts.rainy);
+  if (cond.includes("cloud")) return random(weatherRoasts.cloudy);
+  if (cond.includes("storm") || cond.includes("thunder")) return random(weatherRoasts.storm);
+  if (cond.includes("snow")) return random(weatherRoasts.snow);
+  return random(weatherRoasts.default);
+}
+
+function random(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
 // ====== CONFIG ======
 const apiKey = "e7863f79cf634b92af5205928251911"; // Replace with your key if needed
 const daysForcast = 5;
@@ -106,6 +167,8 @@ function displayWeather(data, fromCache=false) {
 
   animateValue(document.getElementById('temperature'), 0, data.current.temp_c, '°C');
   document.getElementById('description').textContent = data.current.condition.text;
+  document.getElementById('roastLine').textContent = 
+  getRoastForCondition(data.current.condition.text);
   animateValue(document.getElementById('feelsLike'), 0, data.current.feelslike_c, '°C');
   animateValue(document.getElementById('humidity'), 0, data.current.humidity, '%');
   animateValue(document.getElementById('wind'), 0, data.current.wind_kph, ' kph');

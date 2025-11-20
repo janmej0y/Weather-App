@@ -357,3 +357,15 @@ header h1{font-size:1.6rem;background:linear-gradient(45deg,#ff9800,#ff5722);-we
   -webkit-text-fill-color: transparent;
   text-shadow: none;
 }
+.roast {
+  margin-top: 10px;
+  font-size: 0.95rem;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.10);
+  backdrop-filter: blur(4px);
+  font-weight: 500;
+  line-height: 1.5;
+  border-left: 4px solid #ff9800;
+  animation: fadeIn 0.5s ease-in-out;
+}
